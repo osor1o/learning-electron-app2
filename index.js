@@ -1,29 +1,12 @@
 const { app, BrowserWindow, Menu } = require("electron");
+const { menuTemplate } = require("./utils")
 
 let mainWindow;
-
-const menuTemplate = [
-    {
-        label: "Menu",
-        submenu: [
-            {label: "Add comment"},
-            {
-                label: "Exit",
-                accelerator: process.platform === "darwin" ? "Cmd+Q" : "Alt+F4",
-                click() {
-                    app.quit();
-                }
-            }
-        ]
-    }
-];
-
-if(process.platform === "darwin")
-    menuTemplate.unshift({ label: "" })
 
 app.on("ready", () => {
     mainWindow = new BrowserWindow({});
     mainWindow.loadURL(`file://${__dirname}/main.html`);
+    mainWindow.on('closed', () => app.quit())
     const mainMenu = Menu.buildFromTemplate(menuTemplate);
     Menu.setApplicationMenu(mainMenu);
 });
