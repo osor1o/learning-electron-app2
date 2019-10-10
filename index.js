@@ -1,5 +1,6 @@
-const { app, BrowserWindow, Menu } = require("electron");
+const { app, BrowserWindow, Menu, ipcMain } = require("electron");
 const { menuTemplate } = require("./utils")
+const { commentWindow } = require("./actions")
 
 let mainWindow;
 
@@ -9,4 +10,9 @@ app.on("ready", () => {
     mainWindow.on('closed', () => app.quit())
     const mainMenu = Menu.buildFromTemplate(menuTemplate);
     Menu.setApplicationMenu(mainMenu);
+});
+
+ipcMain.on("addComment", (event, comment) => {
+    console.log(commentWindow)
+    mainWindow.webContents.send("addComment", comment)
 });
